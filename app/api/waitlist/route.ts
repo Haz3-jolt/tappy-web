@@ -37,8 +37,9 @@ export async function POST(request: NextRequest) {
       source,
       createdAt: now,
       updatedAt: now,
-      ip: getClientIp(request),
-      userAgent: request.headers.get("user-agent") || "",
+      // Keep the waitlist clean/private. We don't need IP or user-agent for signups.
+      ip: "",
+      userAgent: "",
     });
   } catch (error) {
     console.error("Waitlist save failed", error);
@@ -48,11 +49,3 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ ok: true, message: "You're on the iOS waitlist." });
 }
 
-function getClientIp(request: NextRequest) {
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  if (forwardedFor) {
-    return forwardedFor.split(",")[0].trim();
-  }
-
-  return request.headers.get("x-real-ip") || "";
-}

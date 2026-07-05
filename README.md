@@ -71,7 +71,7 @@ After redeploying, download the CSV here:
 https://your-domain.vercel.app/api/waitlist/export?key=YOUR_SECRET
 ```
 
-The CSV includes email, name, source, signup time, IP, and user agent.
+The CSV includes email, name, source, and signup time. IP/user-agent are intentionally omitted.
 
 You can also call it with a header instead of putting the secret in the URL:
 

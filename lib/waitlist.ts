@@ -186,7 +186,7 @@ export async function listWaitlistEntries(): Promise<WaitlistEntry[]> {
 }
 
 export function waitlistEntriesToCsv(entries: WaitlistEntry[]) {
-  const fields: Array<keyof WaitlistEntry> = ["createdAt", "updatedAt", "email", "name", "source", "ip", "userAgent"];
+  const fields: Array<keyof WaitlistEntry> = ["createdAt", "updatedAt", "email", "name", "source"];
   const rows = [
     fields.join(","),
     ...entries.map((entry) => fields.map((field) => csvCell(entry[field])).join(",")),
