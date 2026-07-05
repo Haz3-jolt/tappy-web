@@ -43,25 +43,17 @@ UPSTASH_REDIS_REST_TOKEN=
 
 On Vercel: add a Redis/Upstash storage integration to the project and Vercel will provide the env vars.
 
-## Owner view
+## Viewing signups
 
-Set this env var in Vercel:
+Simplest owner flow: open the Vercel project → Storage → your Redis/Upstash database → browse the keys under `tappy:waitlist:*`.
+
+Optional: the repo still includes `/creator` for CSV export. Only set this env var if you want to use that page:
 
 ```bash
 ADMIN_SECRET=replace-with-a-long-random-secret
 ```
 
-Then visit:
-
-```text
-/creator
-```
-
-Enter the secret to view signups or export CSV. Raw CSV endpoint:
-
-```bash
-curl -H "x-admin-secret: $ADMIN_SECRET" "https://your-domain.vercel.app/api/waitlist?format=csv" -o tappy-waitlist.csv
-```
+Then visit `/creator`, enter the secret, and export CSV.
 
 ## Deploy
 
@@ -72,5 +64,8 @@ vercel
 
 Required on Vercel:
 
-- `ADMIN_SECRET`
 - Redis/Upstash storage integration
+
+Optional:
+
+- `ADMIN_SECRET` only if you want to use `/creator` / CSV export

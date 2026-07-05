@@ -1,4 +1,4 @@
-/* Simple, white, crayon-ish. No bento. No launch-page soup. */
+/* Simple white page. Comic Sans. No bento. No launch-page soup. */
 :root {
   --ink: #111;
   --muted: #666;
@@ -120,59 +120,14 @@ code {
   font-size: 17px;
 }
 
-.crayon-title {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.13em;
+.hero-title {
   max-width: 820px;
   margin: 0 auto;
   font-size: clamp(62px, 13vw, 124px);
   font-weight: 900;
   letter-spacing: -0.08em;
-  line-height: 0.88;
-}
-
-.crayon-title span {
-  --delay: 0ms;
-  position: relative;
-  display: inline-block;
-  color: var(--ink);
-  opacity: 0;
-  text-shadow:
-    1px 0 0 currentColor,
-    -1px 0 0 rgba(17, 17, 17, 0.18),
-    0 1px 0 rgba(17, 17, 17, 0.2),
-    0 -1px 0 rgba(17, 17, 17, 0.12);
-  transform: translateY(12px) rotate(-1deg);
-  animation: crayonIn 560ms cubic-bezier(.18,.89,.32,1.28) forwards;
-  animation-delay: var(--delay);
-}
-
-.crayon-title span:nth-child(2) {
-  color: var(--blue);
-  transform: translateY(12px) rotate(2deg);
-}
-
-.crayon-title span:nth-child(3) {
-  color: var(--green);
-  transform: translateY(12px) rotate(-2deg);
-}
-
-.crayon-title span::after {
-  content: "";
-  position: absolute;
-  left: 0.05em;
-  right: 0.02em;
-  bottom: -0.1em;
-  height: 0.08em;
-  border-radius: 999px;
-  background: currentColor;
-  opacity: 0.18;
-  transform: scaleX(0) rotate(-1deg);
-  transform-origin: left;
-  animation: underlineDraw 480ms ease-out forwards;
-  animation-delay: calc(var(--delay) + 220ms);
+  line-height: 1.02;
+  text-wrap: balance;
 }
 
 .lede {
@@ -503,29 +458,6 @@ input:focus {
   border-bottom: 0;
 }
 
-@keyframes crayonIn {
-  0% {
-    opacity: 0;
-    clip-path: inset(0 100% 0 0);
-    transform: translateY(12px) rotate(-2deg) scale(0.98);
-  }
-  65% {
-    opacity: 1;
-    clip-path: inset(0 0 0 0);
-  }
-  100% {
-    opacity: 1;
-    clip-path: inset(0 0 0 0);
-    transform: translateY(0) rotate(-1deg) scale(1);
-  }
-}
-
-@keyframes underlineDraw {
-  to {
-    transform: scaleX(1) rotate(-1deg);
-  }
-}
-
 @keyframes tapPop {
   0%, 100% { transform: translateY(0) rotate(-12deg); }
   50% { transform: translateY(-5px) rotate(-8deg); }
@@ -558,8 +490,7 @@ input:focus {
     padding-top: 26px;
   }
 
-  .crayon-title {
-    justify-content: flex-start;
+  .hero-title {
     text-align: left;
   }
 

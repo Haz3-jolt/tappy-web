@@ -23,10 +23,10 @@ export default function WaitlistForm() {
         body: JSON.stringify(Object.fromEntries(formData.entries())),
       });
 
-      const result = (await response.json()) as { message?: string };
+      const result = await readApiMessage(response);
 
       if (!response.ok) {
-        throw new Error(result.message || "Something went wrong.");
+        throw new Error(result.message || "Could not join the waitlist.");
       }
 
       setState("success");
@@ -68,4 +68,17 @@ export default function WaitlistForm() {
       </p>
     </form>
   );
+}
+
+async function readApiMessage(response: Response): Promise<{ message?: string }> {
+  const text = await response.text();
+  if (!text) {
+    return {};
+  }
+
+  try {
+    return JSON.parse(text) as { message?: string };
+  } catch {
+    return { message: text };
+  }
 }

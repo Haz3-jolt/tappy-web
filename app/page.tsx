@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import WaitlistForm from "../components/WaitlistForm";
 
 const apkHref = "/downloads/tappy.apk";
@@ -22,15 +21,11 @@ export default function Home() {
       <section id="top" className="hero">
         <p className="kicker">android apk is here · ios soon</p>
 
-        <h1 className="crayon-title" aria-label="Tappy is here">
-          <span style={{ "--delay": "0ms" } as CSSProperties}>Tappy</span>
-          <span style={{ "--delay": "360ms" } as CSSProperties}>is</span>
-          <span style={{ "--delay": "720ms" } as CSSProperties}>here.</span>
-        </h1>
+        <h1 className="hero-title">Tappy is here.</h1>
 
         <p className="lede">
-          A small phone helper you can actually try. Download the Android APK, peek at the code,
-          or join the iOS waitlist.
+          A companion for your phone. Talk to it, learn from it, and let it help with the little
+          day-to-day stuff on your screen.
         </p>
 
         <div className="actions">
@@ -57,8 +52,8 @@ export default function Home() {
       <section className="plain-section">
         <h2>what is tappy?</h2>
         <p>
-          Tappy is a little Android experiment for phone actions and guidance. Not a big landing
-          page thing. Just the app, the repo, and a way to hear when iOS is ready.
+          Tappy is a phone companion that teaches you things, guides you in apps, and helps with
+          day-to-day tasks. The idea is simple: talk to your phone and have it help you do stuff.
         </p>
       </section>
 
@@ -80,7 +75,7 @@ export default function Home() {
 
       <footer className="footer">
         <span>tappy taps. you nap.</span>
-        <a href="/creator">owner waitlist</a>
+        <a href={githubHref} target="_blank" rel="noreferrer">github</a>
       </footer>
     </main>
   );
