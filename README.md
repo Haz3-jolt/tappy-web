@@ -69,3 +69,5 @@ vercel
 Required on Vercel:
 
 - Redis/Upstash storage integration
+
+<!-- redeploy trigger: redis env refresh -->
