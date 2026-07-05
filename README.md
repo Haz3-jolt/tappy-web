@@ -44,22 +44,29 @@ REDIS_URL=
 
 That is the only required production setup for the waitlist. After connecting storage, redeploy so the env vars are present in the deployment.
 
-## Viewing signups as owner
+## Exporting signups as CSV
 
-Open your Vercel dashboard:
+Set this Vercel env var:
 
-```text
-Project → Storage → Redis / Upstash → Data Browser
+```bash
+WAITLIST_EXPORT_SECRET=replace-with-a-long-random-secret
 ```
 
-Look for keys:
+After redeploying, download the CSV here:
 
 ```text
-tappy:waitlist:emails
-tappy:waitlist:entry:<email>
+https://your-domain.vercel.app/api/waitlist/export?key=YOUR_SECRET
 ```
 
-Each `tappy:waitlist:entry:<email>` hash contains the email, name, source, and signup time.
+The CSV includes email, name, source, signup time, IP, and user agent.
+
+You can also call it with a header instead of putting the secret in the URL:
+
+```bash
+curl -H "x-export-secret: $WAITLIST_EXPORT_SECRET" \
+  https://your-domain.vercel.app/api/waitlist/export \
+  -o tappy-ios-waitlist.csv
+```
 
 ## Deploy
 
@@ -71,5 +78,4 @@ vercel
 Required on Vercel:
 
 - Redis/Upstash storage integration attached to the same Vercel project/environment as the deployed site
-
-<!-- redeploy trigger: redis env refresh -->
+- `WAITLIST_EXPORT_SECRET` if you want CSV export
