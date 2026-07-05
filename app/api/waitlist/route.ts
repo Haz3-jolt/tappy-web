@@ -40,7 +40,8 @@ export async function POST(request: NextRequest) {
       ip: getClientIp(request),
       userAgent: request.headers.get("user-agent") || "",
     });
-  } catch {
+  } catch (error) {
+    console.error("Waitlist save failed", error);
     return NextResponse.json({ ok: false, message: "Waitlist storage is not ready yet." }, { status: 500 });
   }
 

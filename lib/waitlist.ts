@@ -11,6 +11,13 @@ export type WaitlistEntry = {
   userAgent: string;
 };
 
+type WaitlistStore = {
+  addEmail(email: string): Promise<void>;
+  setEntry(email: string, entry: WaitlistEntry): Promise<void>;
+  listEmails(): Promise<string[]>;
+  getEntry(email: string): Promise<Partial<WaitlistEntry> | null>;
+};
+
 const STORE_PREFIX = process.env.WAITLIST_STORE_PREFIX || "tappy";
 const LOCAL_DATA_FILE = path.join(process.cwd(), ".data", "waitlist.json");
 
@@ -22,30 +29,74 @@ function entryKey(email: string) {
   return `${STORE_PREFIX}:waitlist:entry:${email}`;
 }
 
-function getRedisConfig() {
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+async function getStore(): Promise<WaitlistStore | null> {
+  return (await getUpstashRestStore()) || (await getRedisUrlStore());
+}
+
+async function getUpstashRestStore(): Promise<WaitlistStore | null> {
+  const url =
+    process.env.KV_REST_API_URL ||
+    process.env.UPSTASH_REDIS_REST_URL ||
+    process.env.REDIS_REST_API_URL ||
+    process.env.VERCEL_KV_REST_API_URL;
+  const token =
+    process.env.KV_REST_API_TOKEN ||
+    process.env.UPSTASH_REDIS_REST_TOKEN ||
+    process.env.REDIS_REST_API_TOKEN ||
+    process.env.VERCEL_KV_REST_API_TOKEN;
 
   if (!url || !token) {
     return null;
   }
 
-  return { url, token };
+  const { Redis } = await import("@upstash/redis");
+  const redis = new Redis({ url, token });
+
+  return {
+    addEmail: (email) => redis.sadd(emailsKey(), email).then(() => undefined),
+    setEntry: (email, entry) => redis.hset(entryKey(email), entry).then(() => undefined),
+    listEmails: async () => ((await redis.smembers(emailsKey())) || []) as string[],
+    getEntry: async (email) => (await redis.hgetall(entryKey(email))) as Partial<WaitlistEntry> | null,
+  };
 }
 
-async function getRedisClient() {
-  const config = getRedisConfig();
-  if (!config) {
+let redisUrlStorePromise: Promise<WaitlistStore | null> | null = null;
+
+async function getRedisUrlStore(): Promise<WaitlistStore | null> {
+  if (!redisUrlStorePromise) {
+    redisUrlStorePromise = createRedisUrlStore();
+  }
+
+  return redisUrlStorePromise;
+}
+
+async function createRedisUrlStore(): Promise<WaitlistStore | null> {
+  const url = process.env.REDIS_URL || process.env.KV_URL || process.env.UPSTASH_REDIS_URL;
+  if (!url) {
     return null;
   }
 
-  const { Redis } = await import("@upstash/redis");
-  return new Redis(config);
+  const { createClient } = await import("redis");
+  const client = createClient({ url });
+  client.on("error", (error) => console.error("Redis waitlist client error", error));
+  await client.connect();
+
+  return {
+    addEmail: (email) => client.sAdd(emailsKey(), email).then(() => undefined),
+    setEntry: (email, entry) => client.hSet(entryKey(email), entry).then(() => undefined),
+    listEmails: () => client.sMembers(emailsKey()),
+    getEntry: async (email) => {
+      const entry = await client.hGetAll(entryKey(email));
+      return Object.keys(entry).length ? (entry as Partial<WaitlistEntry>) : null;
+    },
+  };
 }
 
 function assertCanUseLocalFallback() {
   if (process.env.VERCEL) {
-    throw new Error("Waitlist storage is not configured. Add Vercel Redis / Upstash env vars.");
+    throw new Error(
+      "Waitlist storage is not configured. Expected Redis env vars like KV_REST_API_URL/KV_REST_API_TOKEN, UPSTASH_REDIS_REST_URL/UPSTASH_REDIS_REST_TOKEN, or REDIS_URL.",
+    );
   }
 }
 
@@ -55,7 +106,7 @@ function normalizeEntry(value: Partial<WaitlistEntry> & { email: string }): Wait
   return {
     email: String(value.email || "").toLowerCase(),
     name: String(value.name || ""),
-    source: String(value.source || "landing"),
+    source: String(value.source || "ios-waitlist"),
     createdAt: String(value.createdAt || now),
     updatedAt: String(value.updatedAt || value.createdAt || now),
     ip: String(value.ip || ""),
@@ -85,10 +136,10 @@ async function writeLocalEntries(entries: WaitlistEntry[]) {
 export async function saveWaitlistEntry(entry: WaitlistEntry) {
   const cleanEntry = normalizeEntry(entry);
 
-  const redis = await getRedisClient();
-  if (redis) {
-    await redis.sadd(emailsKey(), cleanEntry.email);
-    await redis.hset(entryKey(cleanEntry.email), cleanEntry);
+  const store = await getStore();
+  if (store) {
+    await store.addEmail(cleanEntry.email);
+    await store.setEntry(cleanEntry.email, cleanEntry);
     return cleanEntry;
   }
 
@@ -113,12 +164,12 @@ export async function saveWaitlistEntry(entry: WaitlistEntry) {
 }
 
 export async function listWaitlistEntries(): Promise<WaitlistEntry[]> {
-  const redis = await getRedisClient();
-  if (redis) {
-    const emails = ((await redis.smembers(emailsKey())) || []) as string[];
+  const store = await getStore();
+  if (store) {
+    const emails = await store.listEmails();
     const entries = await Promise.all(
       emails.map(async (email) => {
-        const stored = (await redis.hgetall(entryKey(email))) as Partial<WaitlistEntry> | null;
+        const stored = await store.getEntry(email);
         return stored ? normalizeEntry({ ...stored, email: stored.email || email }) : null;
       }),
     );

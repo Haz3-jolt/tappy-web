@@ -51,11 +51,6 @@ export default function WaitlistForm() {
         </label>
       </div>
 
-      <label className="hp-field" aria-hidden="true">
-        Website
-        <input name="website" type="text" tabIndex={-1} autoComplete="off" />
-      </label>
-
       <input name="source" type="hidden" value="ios-waitlist" />
 
       <button className="button button-primary" type="submit" disabled={state === "loading"}>

@@ -30,7 +30,7 @@ No separate hosting needed. Vercel serves it as a static file from `public/`.
 
 ## Waitlist storage
 
-The homepage form writes signups to Redis. On Vercel, add a Redis/Upstash storage integration to this project. Vercel will inject one of these env var pairs:
+The homepage form writes signups to Redis. On Vercel, add a Redis/Upstash storage integration to this project. The app accepts any one of these configurations:
 
 ```bash
 KV_REST_API_URL=
@@ -38,9 +38,11 @@ KV_REST_API_TOKEN=
 # or
 UPSTASH_REDIS_REST_URL=
 UPSTASH_REDIS_REST_TOKEN=
+# or
+REDIS_URL=
 ```
 
-That is the only required production setup for the waitlist.
+That is the only required production setup for the waitlist. After connecting storage, redeploy so the env vars are present in the deployment.
 
 ## Viewing signups as owner
 
@@ -68,6 +70,6 @@ vercel
 
 Required on Vercel:
 
-- Redis/Upstash storage integration
+- Redis/Upstash storage integration attached to the same Vercel project/environment as the deployed site
 
 <!-- redeploy trigger: redis env refresh -->
