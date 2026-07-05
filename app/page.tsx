@@ -1,6 +1,6 @@
+import DownloadButton from "../components/DownloadButton";
 import WaitlistForm from "../components/WaitlistForm";
 
-const apkHref = "/downloads/tappy.apk";
 const githubHref = "https://github.com/adityamhn/heytappy";
 
 export default function Home() {
@@ -12,7 +12,7 @@ export default function Home() {
           <span>Tappy</span>
         </a>
         <nav aria-label="Main navigation">
-          <a href={apkHref} download="tappy.apk">apk</a>
+          <a href="#download">apk</a>
           <a href={githubHref} target="_blank" rel="noreferrer">github</a>
           <a href="#waitlist">ios waitlist</a>
         </nav>
@@ -29,9 +29,7 @@ export default function Home() {
         </p>
 
         <div className="actions">
-          <a className="button primary" href={apkHref} download="tappy.apk">
-            download apk
-          </a>
+          <DownloadButton label="download apk" />
           <a className="button github-button" href={githubHref} target="_blank" rel="noreferrer">
             <GitHubIcon />
             github
@@ -62,9 +60,7 @@ export default function Home() {
         <p>
           The APK is built into this site at <code>/downloads/tappy.apk</code>. No separate hosting.
         </p>
-        <a className="button primary" href={apkHref} download="tappy.apk">
-          download tappy.apk
-        </a>
+        <DownloadButton label="download tappy.apk" />
       </section>
 
       <section id="waitlist" className="plain-section waitlist-block">

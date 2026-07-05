@@ -28,9 +28,9 @@ The site downloads it from:
 
 No separate hosting needed. Vercel serves it as a static file from `public/`.
 
-## Waitlist storage
+## Redis storage
 
-The homepage form writes signups to Redis. On Vercel, add a Redis/Upstash storage integration to this project. The app accepts any one of these configurations:
+The homepage form writes iOS waitlist signups to Redis, and the APK download button increments a Redis counter. On Vercel, add a Redis/Upstash storage integration to this project. The app accepts any one of these configurations:
 
 ```bash
 KV_REST_API_URL=
@@ -42,7 +42,20 @@ UPSTASH_REDIS_REST_TOKEN=
 REDIS_URL=
 ```
 
-That is the only required production setup for the waitlist. After connecting storage, redeploy so the env vars are present in the deployment.
+That is the only required production setup. After connecting storage, redeploy so the env vars are present in the deployment.
+
+Download counter API:
+
+```text
+GET /api/downloads      # returns { ok, count }
+POST /api/downloads     # increments and returns { ok, count }
+```
+
+Counter key in Redis:
+
+```text
+tappy:downloads:apk
+```
 
 ## Exporting signups as CSV
 

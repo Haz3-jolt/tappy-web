@@ -194,6 +194,27 @@ code {
   height: 21px;
 }
 
+.download-widget {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.download-widget .button {
+  margin-top: 0;
+}
+
+.download-count {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.plain-section > .download-widget {
+  margin-top: 22px;
+}
+
 .doodle {
   position: relative;
   height: 98px;
@@ -517,7 +538,8 @@ input:focus {
     width: 100%;
   }
 
-  .button {
+  .button,
+  .download-widget {
     width: 100%;
   }
 }

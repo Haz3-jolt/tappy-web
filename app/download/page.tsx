@@ -1,6 +1,6 @@
 import Link from "next/link";
+import DownloadButton from "../../components/DownloadButton";
 
-const apkHref = "/downloads/tappy.apk";
 
 export default function DownloadPage() {
   return (
@@ -17,9 +17,7 @@ export default function DownloadPage() {
           and lives inside this site.
         </p>
         <div className="actions">
-          <a className="button primary" href={apkHref} download="tappy.apk">
-            download tappy.apk
-          </a>
+          <DownloadButton label="download tappy.apk" />
           <Link className="button" href="/">
             back home
           </Link>
