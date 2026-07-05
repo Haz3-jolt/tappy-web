@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { listWaitlistEntries, saveWaitlistEntry, waitlistEntriesToCsv } from "../../../lib/waitlist";
+import { saveWaitlistEntry } from "../../../lib/waitlist";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
   const email = String(body.email || "").trim().toLowerCase();
   const name = String(body.name || "").trim().slice(0, 120);
-  const source = String(body.source || "landing").trim().slice(0, 80) || "landing";
+  const source = String(body.source || "ios-waitlist").trim().slice(0, 80) || "ios-waitlist";
 
   if (!EMAIL_PATTERN.test(email)) {
     return NextResponse.json({ ok: false, message: "Enter a valid email." }, { status: 400 });
@@ -45,48 +45,6 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json({ ok: true, message: "You're on the iOS waitlist." });
-}
-
-export async function GET(request: NextRequest) {
-  if (!isAuthorized(request)) {
-    return NextResponse.json({ ok: false, message: "Unauthorized." }, { status: 401 });
-  }
-
-  let entries: Awaited<ReturnType<typeof listWaitlistEntries>>;
-
-  try {
-    entries = await listWaitlistEntries();
-  } catch {
-    return NextResponse.json({ ok: false, message: "Waitlist storage is not configured." }, { status: 500 });
-  }
-
-  const format = request.nextUrl.searchParams.get("format") || "json";
-
-  if (format === "csv") {
-    const date = new Date().toISOString().slice(0, 10);
-    return new Response(waitlistEntriesToCsv(entries), {
-      headers: {
-        "Cache-Control": "no-store",
-        "Content-Disposition": `attachment; filename="tappy-waitlist-${date}.csv"`,
-        "Content-Type": "text/csv; charset=utf-8",
-      },
-    });
-  }
-
-  return NextResponse.json(
-    { ok: true, count: entries.length, entries },
-    { headers: { "Cache-Control": "no-store" } },
-  );
-}
-
-function isAuthorized(request: NextRequest) {
-  const adminSecret = process.env.ADMIN_SECRET || process.env.WAITLIST_ADMIN_SECRET;
-  if (!adminSecret) {
-    return false;
-  }
-
-  const providedSecret = request.headers.get("x-admin-secret") || request.nextUrl.searchParams.get("secret");
-  return providedSecret === adminSecret;
 }
 
 function getClientIp(request: NextRequest) {
