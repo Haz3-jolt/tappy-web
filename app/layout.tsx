@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Tappy — helps your phone tap stuff",
-  description: "Download the embedded Tappy Android APK or join the waitlist for the next build.",
+  description: "Download the embedded Tappy Android APK or join the iOS waitlist.",
   openGraph: {
     title: "Tappy — helps your phone tap stuff",
     description: "A tiny Android helper for testing phone actions.",

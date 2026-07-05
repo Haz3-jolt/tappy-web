@@ -43,6 +43,12 @@ async function getRedisClient() {
   return new Redis(config);
 }
 
+function assertCanUseLocalFallback() {
+  if (process.env.VERCEL) {
+    throw new Error("Waitlist storage is not configured. Add Vercel Redis / Upstash env vars.");
+  }
+}
+
 function normalizeEntry(value: Partial<WaitlistEntry> & { email: string }): WaitlistEntry {
   const now = new Date().toISOString();
 
@@ -86,6 +92,8 @@ export async function saveWaitlistEntry(entry: WaitlistEntry) {
     return cleanEntry;
   }
 
+  assertCanUseLocalFallback();
+
   const entries = await readLocalEntries();
   const existingIndex = entries.findIndex((item) => item.email === cleanEntry.email);
 
@@ -119,6 +127,8 @@ export async function listWaitlistEntries(): Promise<WaitlistEntry[]> {
       .filter((entry): entry is WaitlistEntry => Boolean(entry))
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   }
+
+  assertCanUseLocalFallback();
 
   const entries = await readLocalEntries();
   return entries.sort((a, b) => b.createdAt.localeCompare(a.createdAt));

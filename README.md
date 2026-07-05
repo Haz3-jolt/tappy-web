@@ -1,6 +1,6 @@
-# Tappy webdem
+# Tappy web
 
-A simple white Next.js landing site for Tappy with the APK served directly from the repo.
+Simple white Next.js site for Tappy. The Android APK is served directly from the repo and the waitlist is stored in Vercel Redis / Upstash.
 
 ## Local dev
 
@@ -13,53 +13,64 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-## APK link
+## APK
 
-The APK from `C:\Users\haris\Downloads\tappy.apk` is embedded in the site at:
+The APK is embedded at:
 
 ```text
 public/downloads/tappy.apk
 ```
 
-The landing page download button points to:
+The site downloads it from:
 
 ```text
 /downloads/tappy.apk
 ```
 
-No separate hosting is needed. Next/Vercel serves it as a static file from `public/`.
+No separate hosting needed. Vercel serves it as a static file from `public/`.
 
-## Waitlist storage
+## Waitlist
 
-- Local dev fallback: `.data/waitlist.json`.
-- Vercel production: connect **Vercel Redis / Upstash** to the project so either `KV_REST_API_URL` + `KV_REST_API_TOKEN` or `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` are available.
+Users submit the form on the homepage. The API writes each signup to Redis using these env vars:
 
-## Creator export
+```bash
+KV_REST_API_URL=
+KV_REST_API_TOKEN=
+# or
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+```
 
-Set an env var:
+On Vercel: add a Redis/Upstash storage integration to the project and Vercel will provide the env vars.
+
+## Owner view
+
+Set this env var in Vercel:
 
 ```bash
 ADMIN_SECRET=replace-with-a-long-random-secret
 ```
 
-Then visit `/creator`, enter that secret, and export CSV.
+Then visit:
 
-The raw endpoints also exist:
+```text
+/creator
+```
+
+Enter the secret to view signups or export CSV. Raw CSV endpoint:
 
 ```bash
-curl -H "x-admin-secret: $ADMIN_SECRET" https://your-domain.vercel.app/api/waitlist
 curl -H "x-admin-secret: $ADMIN_SECRET" "https://your-domain.vercel.app/api/waitlist?format=csv" -o tappy-waitlist.csv
 ```
 
-## Deploy to Vercel
+## Deploy
 
 ```bash
 npm run build
 vercel
 ```
 
-In Vercel, add:
+Required on Vercel:
 
 - `ADMIN_SECRET`
-- Vercel Redis / Upstash storage
-- APK already embedded at `public/downloads/tappy.apk`
+- Redis/Upstash storage integration

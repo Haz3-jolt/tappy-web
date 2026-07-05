@@ -6,7 +6,7 @@ type SubmitState = "idle" | "loading" | "success" | "error";
 
 export default function WaitlistForm() {
   const [state, setState] = useState<SubmitState>("idle");
-  const [message, setMessage] = useState("Be first in line for the APK drop.");
+  const [message, setMessage] = useState("Join for the iOS build.");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -30,7 +30,7 @@ export default function WaitlistForm() {
       }
 
       setState("success");
-      setMessage(result.message || "You're on the Tappy waitlist.");
+      setMessage(result.message || "You're on the iOS waitlist.");
       form.reset();
     } catch (error) {
       setState("error");
@@ -56,10 +56,10 @@ export default function WaitlistForm() {
         <input name="website" type="text" tabIndex={-1} autoComplete="off" />
       </label>
 
-      <input name="source" type="hidden" value="landing-page" />
+      <input name="source" type="hidden" value="ios-waitlist" />
 
       <button className="button button-primary" type="submit" disabled={state === "loading"}>
-        {state === "loading" ? "Joining..." : "Join waitlist"}
+        {state === "loading" ? "Joining..." : "Join iOS waitlist"}
         <span aria-hidden="true">→</span>
       </button>
 

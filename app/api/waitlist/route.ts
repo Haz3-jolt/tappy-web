@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
   // Silent honeypot for bots. Real users never fill this hidden field.
   if (String(body.website || "").trim()) {
-    return NextResponse.json({ ok: true, message: "You're on the list." });
+    return NextResponse.json({ ok: true, message: "You're on the iOS waitlist." });
   }
 
   const email = String(body.email || "").trim().toLowerCase();
@@ -29,17 +29,22 @@ export async function POST(request: NextRequest) {
   }
 
   const now = new Date().toISOString();
-  await saveWaitlistEntry({
-    email,
-    name,
-    source,
-    createdAt: now,
-    updatedAt: now,
-    ip: getClientIp(request),
-    userAgent: request.headers.get("user-agent") || "",
-  });
 
-  return NextResponse.json({ ok: true, message: "You're on the Tappy waitlist." });
+  try {
+    await saveWaitlistEntry({
+      email,
+      name,
+      source,
+      createdAt: now,
+      updatedAt: now,
+      ip: getClientIp(request),
+      userAgent: request.headers.get("user-agent") || "",
+    });
+  } catch {
+    return NextResponse.json({ ok: false, message: "Waitlist storage is not ready yet." }, { status: 500 });
+  }
+
+  return NextResponse.json({ ok: true, message: "You're on the iOS waitlist." });
 }
 
 export async function GET(request: NextRequest) {
@@ -47,7 +52,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ ok: false, message: "Unauthorized." }, { status: 401 });
   }
 
-  const entries = await listWaitlistEntries();
+  let entries: Awaited<ReturnType<typeof listWaitlistEntries>>;
+
+  try {
+    entries = await listWaitlistEntries();
+  } catch {
+    return NextResponse.json({ ok: false, message: "Waitlist storage is not configured." }, { status: 500 });
+  }
+
   const format = request.nextUrl.searchParams.get("format") || "json";
 
   if (format === "csv") {
