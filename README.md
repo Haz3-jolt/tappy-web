@@ -1,6 +1,6 @@
 # Tappy webdem
 
-A simple Next.js landing site for Tappy, styled after Impeccable's dark lacquer / kinpaku gold system.
+A playful pink/purple Next.js landing site for Tappy with the APK served directly from the repo.
 
 ## Local dev
 
@@ -15,7 +15,7 @@ Open `http://localhost:3000`.
 
 ## APK link
 
-The APK from `C:\Users\haris\Downloads\tappy.apk` is included at:
+The APK from `C:\Users\haris\Downloads\tappy.apk` is embedded in the site at:
 
 ```text
 public/downloads/tappy.apk
@@ -27,13 +27,7 @@ The landing page download button points to:
 /downloads/tappy.apk
 ```
 
-For Vercel, keep this env var or omit it because it is the app default:
-
-```bash
-NEXT_PUBLIC_APK_URL=/downloads/tappy.apk
-```
-
-You can also point `NEXT_PUBLIC_APK_URL` at an external hosted APK URL later.
+No separate hosting is needed. Next/Vercel serves it as a static file from `public/`.
 
 ## Waitlist storage
 
@@ -68,4 +62,4 @@ In Vercel, add:
 
 - `ADMIN_SECRET`
 - Vercel Redis / Upstash storage
-- optional `NEXT_PUBLIC_APK_URL=/downloads/tappy.apk`
+- APK already embedded at `public/downloads/tappy.apk`

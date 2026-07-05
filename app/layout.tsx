@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Tappy — Your phone, upgraded by AI",
-  description: "Join the Tappy waitlist and get the Android APK when it drops.",
+  title: "Tappy — tiny pink phone sidekick",
+  description: "Download the embedded Tappy Android APK or join the waitlist for the next quirky build.",
   openGraph: {
-    title: "Tappy — Your phone, upgraded by AI",
-    description: "A mobile AI companion that taps, types, scrolls, and teaches across apps.",
+    title: "Tappy — tiny pink phone sidekick",
+    description: "A playful Android helper for tapping through phone chores.",
     type: "website",
   },
   icons: {

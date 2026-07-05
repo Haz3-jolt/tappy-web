@@ -1,11 +1,10 @@
 import Link from "next/link";
 
-const apkHref = process.env.NEXT_PUBLIC_APK_URL?.trim() || "/downloads/tappy.apk";
+const apkHref = "/downloads/tappy.apk";
 
 export default function DownloadPage() {
   return (
     <main className="mini-page">
-      <div className="grain" aria-hidden="true" />
       <section className="mini-card">
         <a className="brand mini-brand" href="/" aria-label="Tappy home">
           <span className="brand-mark">
@@ -14,17 +13,18 @@ export default function DownloadPage() {
           <span className="brand-word">TAPPY</span>
         </a>
         <p className="eyebrow">APK DOWNLOAD</p>
-        <h1>Tappy APK is ready.</h1>
+        <h1>Tappy is packed into this site.</h1>
         <p>
-          Download the current Android build from <code>/downloads/tappy.apk</code>. Android may ask you to allow
-          installs from your browser before opening it.
+          The Android build is served straight from <code>/downloads/tappy.apk</code>. It is only about 1.5 MB,
+          so no separate hosting circus required.
         </p>
         <div className="hero-actions">
-          <a className="button button-primary" href={apkHref}>
-            Download APK
+          <a className="button button-primary" href={apkHref} download="tappy.apk">
+            Download tappy.apk
+            <span aria-hidden="true">↓</span>
           </a>
           <Link className="button button-secondary" href="/">
-            Back home
+            Back to the pink zone
           </Link>
         </div>
       </section>
