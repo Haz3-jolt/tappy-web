@@ -26,11 +26,11 @@ The site downloads it from:
 /downloads/tappy.apk
 ```
 
-No separate hosting needed. Vercel serves it as a static file from `public/`.
+Vercel serves it as a static file from `public/`.
 
 ## Redis storage
 
-The homepage form writes iOS waitlist signups to Redis, and the APK download button increments a Redis counter. On Vercel, add a Redis/Upstash storage integration to this project. The app accepts any one of these configurations:
+The homepage form writes iOS waitlist signups to Redis, and the download button increments a Redis counter. On Vercel, add a Redis/Upstash storage integration to this project. The app accepts any one of these configurations:
 
 ```bash
 KV_REST_API_URL=

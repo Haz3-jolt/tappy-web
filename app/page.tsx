@@ -12,7 +12,7 @@ export default function Home() {
           <span>Tappy</span>
         </a>
         <nav aria-label="Main navigation">
-          <a href="#download">apk</a>
+          <a href="#download">download</a>
           <a href={githubHref} target="_blank" rel="noreferrer">github</a>
           <a href="#waitlist">ios waitlist</a>
         </nav>
@@ -29,7 +29,7 @@ export default function Home() {
         </p>
 
         <div className="actions">
-          <DownloadButton label="download apk" />
+          <DownloadButton label="download" />
           <a className="button github-button" href={githubHref} target="_blank" rel="noreferrer">
             <GitHubIcon />
             github
@@ -58,9 +58,9 @@ export default function Home() {
       <section id="download" className="plain-section">
         <h2>get the apk</h2>
         <p>
-          The APK is built into this site at <code>/downloads/tappy.apk</code>. No separate hosting.
+          The Android build is ready here.
         </p>
-        <DownloadButton label="download tappy.apk" />
+        <DownloadButton label="download" />
       </section>
 
       <section id="waitlist" className="plain-section waitlist-block">

@@ -13,11 +13,10 @@ export default function DownloadPage() {
         <p className="eyebrow">APK DOWNLOAD</p>
         <h1>grab tappy.</h1>
         <p>
-          The Android build is served straight from <code>/downloads/tappy.apk</code>. It is about 1.5 MB
-          and lives inside this site.
+          The Android build is ready here. It is about 1.5 MB.
         </p>
         <div className="actions">
-          <DownloadButton label="download tappy.apk" />
+          <DownloadButton label="download" />
           <Link className="button" href="/">
             back home
           </Link>

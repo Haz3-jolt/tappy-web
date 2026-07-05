@@ -8,7 +8,7 @@ type DownloadButtonProps = {
   label?: string;
 };
 
-export default function DownloadButton({ label = "download apk" }: DownloadButtonProps) {
+export default function DownloadButton({ label = "download" }: DownloadButtonProps) {
   const [count, setCount] = useState<number | null>(null);
   const [isCounting, setIsCounting] = useState(false);
 
@@ -64,7 +64,7 @@ export default function DownloadButton({ label = "download apk" }: DownloadButto
         {isCounting ? "starting..." : label}
       </a>
       <span className="download-count" aria-live="polite">
-        {count === null ? "counting downloads..." : `${count.toLocaleString()} APK download${count === 1 ? "" : "s"}`}
+        {count === null ? "counting downloads..." : `${count.toLocaleString()} download${count === 1 ? "" : "s"}`}
       </span>
     </span>
   );
