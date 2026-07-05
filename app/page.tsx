@@ -1,3 +1,4 @@
+import Script from "next/script";
 import DownloadButton from "../components/DownloadButton";
 import FeedbackForm from "../components/FeedbackForm";
 import WaitlistForm from "../components/WaitlistForm";
@@ -13,6 +14,7 @@ export default function Home() {
           <span>Tappy</span>
         </a>
         <nav aria-label="Main navigation">
+          <a href="#demo">demo</a>
           <a href="#download">download</a>
           <a href={githubHref} target="_blank" rel="noreferrer">github</a>
           <a href="#waitlist">ios waitlist</a>
@@ -56,6 +58,18 @@ export default function Home() {
         </p>
       </section>
 
+      <section id="demo" className="plain-section tweet-section">
+        <h2>see it move</h2>
+        <p>Quick demo from Aditya.</p>
+        <div className="tweet-shell">
+          <blockquote className="twitter-tweet" data-dnt="true" data-theme="light">
+            <a href="https://twitter.com/adityapeela/status/2073634152646345199">
+              Watch the Tappy demo on X
+            </a>
+          </blockquote>
+        </div>
+      </section>
+
       <section id="download" className="plain-section">
         <h2>get the apk</h2>
         <p>
@@ -78,6 +92,7 @@ export default function Home() {
         <span>tappy taps. you nap.</span>
         <a href={githubHref} target="_blank" rel="noreferrer">github</a>
       </footer>
+      <Script id="twitter-widgets" src="https://platform.twitter.com/widgets.js" strategy="lazyOnload" />
     </main>
   );
 }

@@ -310,6 +310,27 @@ code {
   margin-top: 22px;
 }
 
+.tweet-section {
+  max-width: 720px;
+}
+
+.tweet-shell {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  min-height: 220px;
+}
+
+.twitter-tweet {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.twitter-tweet a {
+  color: var(--blue);
+  text-decoration: underline;
+}
+
 .waitlist-block {
   max-width: 620px;
 }
