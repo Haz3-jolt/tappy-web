@@ -1,6 +1,6 @@
 # Tappy webdem
 
-A playful pink/purple Next.js landing site for Tappy with the APK served directly from the repo.
+A simple white Next.js landing site for Tappy with the APK served directly from the repo.
 
 ## Local dev
 

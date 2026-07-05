@@ -23,8 +23,8 @@ export default function DownloadPage() {
             Download tappy.apk
             <span aria-hidden="true">↓</span>
           </a>
-          <Link className="button button-secondary" href="/">
-            Back to the pink zone
+          <Link className="button" href="/">
+            back home
           </Link>
         </div>
       </section>
