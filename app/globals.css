@@ -45,7 +45,8 @@ body::before {
 }
 
 button,
-input {
+input,
+textarea {
   font: inherit;
 }
 
@@ -314,9 +315,22 @@ code {
 }
 
 .waitlist-form,
+.feedback-form,
 .creator-panel {
   margin-top: 20px;
   text-align: left;
+}
+
+.feedback-block {
+  max-width: 620px;
+  margin: 34px auto 0;
+}
+
+.feedback-block h3 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -0.04em;
 }
 
 .form-row {
@@ -335,7 +349,8 @@ label span {
   font-size: 15px;
 }
 
-input {
+input,
+textarea {
   width: 100%;
   min-height: 46px;
   border: 2px solid var(--ink);
@@ -347,11 +362,19 @@ input {
   font-size: 17px;
 }
 
-input:focus {
+textarea {
+  min-height: 120px;
+  padding-top: 10px;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
   background: #fffde8;
 }
 
-.waitlist-form .button {
+.waitlist-form .button,
+.feedback-form .button {
   width: 100%;
   margin-top: 12px;
 }

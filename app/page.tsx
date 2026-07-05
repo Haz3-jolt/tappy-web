@@ -1,4 +1,5 @@
 import DownloadButton from "../components/DownloadButton";
+import FeedbackForm from "../components/FeedbackForm";
 import WaitlistForm from "../components/WaitlistForm";
 
 const githubHref = "https://github.com/adityamhn/heytappy";
@@ -61,6 +62,10 @@ export default function Home() {
           The Android build is ready here.
         </p>
         <DownloadButton label="download" />
+        <div className="feedback-block">
+          <h3>feedback</h3>
+          <FeedbackForm />
+        </div>
       </section>
 
       <section id="waitlist" className="plain-section waitlist-block">

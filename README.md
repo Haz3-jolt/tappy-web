@@ -30,7 +30,7 @@ Vercel serves it as a static file from `public/`.
 
 ## Redis storage
 
-The homepage form writes iOS waitlist signups to Redis, and the download button increments a Redis counter. On Vercel, add a Redis/Upstash storage integration to this project. The app accepts any one of these configurations:
+The homepage writes iOS waitlist signups and Android feedback to Redis, and the download button increments a Redis counter. On Vercel, add a Redis/Upstash storage integration to this project. The app accepts any one of these configurations:
 
 ```bash
 KV_REST_API_URL=
@@ -51,10 +51,12 @@ GET /api/downloads      # returns { ok, count }
 POST /api/downloads     # increments and returns { ok, count }
 ```
 
-Counter key in Redis:
+Counter / feedback keys in Redis:
 
 ```text
 tappy:downloads:apk
+tappy:feedback:ids
+tappy:feedback:entry:<id>
 ```
 
 ## Exporting signups as CSV
@@ -65,20 +67,25 @@ Set this Vercel env var:
 WAITLIST_EXPORT_SECRET=replace-with-a-long-random-secret
 ```
 
-After redeploying, download the CSV here:
+After redeploying, download CSVs here:
 
 ```text
 https://your-domain.vercel.app/api/waitlist/export?key=YOUR_SECRET
+https://your-domain.vercel.app/api/feedback/export?key=YOUR_SECRET
 ```
 
-The CSV includes email, name, source, and signup time. IP/user-agent are intentionally omitted.
+The waitlist CSV includes email, name, source, and signup time. The feedback CSV includes mail, feedback, source, signup time, and id.
 
-You can also call it with a header instead of putting the secret in the URL:
+You can also call them with a header instead of putting the secret in the URL:
 
 ```bash
 curl -H "x-export-secret: $WAITLIST_EXPORT_SECRET" \
   https://your-domain.vercel.app/api/waitlist/export \
   -o tappy-ios-waitlist.csv
+
+curl -H "x-export-secret: $WAITLIST_EXPORT_SECRET" \
+  https://your-domain.vercel.app/api/feedback/export \
+  -o tappy-feedback.csv
 ```
 
 ## Deploy
